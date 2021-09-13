@@ -1,10 +1,17 @@
 const http = require('http');
 
 const server = http.createServer((req, res) => {
-    // Working with requests
-    console.log(req.url, req.method, req.headers);
+    const url = req.url
 
-    // Working with responses
+    if(url === '/write-message'){
+        res.write('<html>')
+        res.write('<head><title>NodeJs Page</title></head>')
+        res.write('<body><form action="/message" method="POST"><input type="text" name="writer"/><button type="submit">There you go!</button></form></body>');
+        res.write('</html>')
+        return res.end();
+    }
+
+
     res.setHeader('Content-Type', 'text/html');
     res.write('<html>')
     res.write('<head><title>NodeJs Page</title></head>')

@@ -14,7 +14,20 @@ const server = http.createServer((req, res) => {
     }
 
     if(url === '/message' && method === 'POST') {
-        fs.writeFileSync('message.txt', 'Some dummy text here!!!');
+        const body = [];
+        req.on('data', chunk =>{
+            //console.log(chunk);
+            body.push(chunk);
+        });
+        req.on('end', () => {
+            const parsedBody = Buffer.concat(body).toString();
+            //console.log(parsedBody);
+            const message = parsedBody.split('=')[1];
+
+            // Now we'll fill the 'message.txt' with the message[const] content!
+            fs.writeFileSync('message.txt', message);
+        })
+
         res.statusCode = 302;
         res.setHeader('Location', '/write-message');
         return res.end();
